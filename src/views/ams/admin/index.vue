@@ -266,9 +266,9 @@ export default {
       this.dialogRoleVisible = true
       this.tempRoles.adminId = row.id
       getRoles(row.id).then(response => {
-        this.roleIds = []
-        for (const temp in response.data) {
-          this.roleIds.push(temp.id)
+        this.tempRoles.roleIds = []
+        for (let i = 0; i < response.data.length; i++) {
+          this.tempRoles.roleIds.push(response.data[i].id)
         }
       })
     },
