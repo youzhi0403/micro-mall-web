@@ -65,7 +65,7 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNum" :limit.sync="listQuery.pageSize" @pagination="getList" />
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="170px" style="width: 400px; margin-left:50px;">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
         <el-form-item label="昵称" prop="nickname">
           <el-input v-model="temp.nickname" placeholder="请输入昵称" />
         </el-form-item>
@@ -100,7 +100,7 @@
     </el-dialog>
 
     <el-dialog title="设置管理员角色" :visible.sync="dialogRoleVisible">
-      <el-form ref="roleForm" label-position="left" label-width="170px" style="width: 400px; margin-left:50px;">
+      <el-form ref="roleForm" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
         <el-form-item label="角色设置">
           <el-select
             v-model="tempRoles.roleIds"
@@ -133,7 +133,7 @@
 </template>
 
 <script>
-import { fetchList, createAdmin, updateAdmin, del, forbidden, launch, getRoles, setRoles } from '@/api/admin'
+import { listPage, add, update, del, forbidden, launch, getRoles, setRoles } from '@/api/admin'
 import { getList } from '@/api/role'
 import Pagination from '@/components/Pagination'
 import { parseTime } from '@/utils'
@@ -207,7 +207,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      fetchList(this.listQuery).then(response => {
+      listPage(this.listQuery).then(response => {
         this.list = response.data.list
         this.total = response.data.total
         this.listLoading = false
@@ -240,7 +240,7 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          createAdmin(this.temp).then(() => {
+          add(this.temp).then(() => {
             this.dialogFormVisible = false
             this.$notify({
               title: 'Success',
@@ -317,7 +317,7 @@ export default {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
           tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          updateAdmin(tempData).then(() => {
+          update(tempData).then(() => {
             this.dialogFormVisible = false
             this.$notify({
               title: 'Success',

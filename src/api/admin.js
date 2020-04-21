@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 import qs from 'qs'
-export function fetchList(query) {
+export function listPage(query) {
   return request({
     url: '/admin/listPage',
     method: 'get',
@@ -30,7 +30,7 @@ export function logout() {
   })
 }
 
-export function createAdmin(data) {
+export function add(data) {
   return request({
     url: '/admin/add',
     method: 'post',
@@ -38,7 +38,7 @@ export function createAdmin(data) {
   })
 }
 
-export function updateAdmin(data) {
+export function update(data) {
   return request({
     url: '/admin/update/' + data.id,
     method: 'post',
