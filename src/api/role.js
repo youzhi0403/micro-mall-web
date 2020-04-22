@@ -43,16 +43,20 @@ export function listPage(query) {
   })
 }
 
-export function getPermissions() {
+export function getPermissions(roleId) {
   return request({
-    url: '',
+    url: '/role/permission/' + roleId,
     method: 'get'
   })
 }
 
-export function setPermissions() {
+export function setPermissions(params) {
   return request({
-    url: '',
-    method: 'post'
+    url: '/role/permission/update',
+    method: 'post',
+    params,
+    paramsSerializer: function(params) {
+      return qs.stringify(params, { arrayFormat: 'repeat' })
+    }
   })
 }

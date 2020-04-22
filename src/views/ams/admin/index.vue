@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleAdd">
         新增
       </el-button>
     </div>
@@ -62,7 +62,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNum" :limit.sync="listQuery.pageSize" @pagination="getList" />
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNum" :limit.sync="listQuery.pageSize" @pagination="listPage" />
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
@@ -93,7 +93,7 @@
         <el-button @click="dialogFormVisible = false">
           取消
         </el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+        <el-button type="primary" @click="dialogStatus==='add'?add():update()">
           确认
         </el-button>
       </div>
@@ -173,7 +173,7 @@ export default {
       dialogStatus: '',
       textMap: {
         update: '编辑管理员',
-        create: '创建管理员'
+        add: '创建管理员'
       },
       temp: {
         id: undefined,
@@ -201,11 +201,11 @@ export default {
     }
   },
   created() {
-    this.getList()
+    this.listPage()
     this.getRoleOptions()
   },
   methods: {
-    getList() {
+    listPage() {
       this.listLoading = true
       listPage(this.listQuery).then(response => {
         this.list = response.data.list
@@ -229,26 +229,26 @@ export default {
         note: ''
       }
     },
-    handleCreate() {
+    handleAdd() {
       this.resetTemp()
-      this.dialogStatus = 'create'
+      this.dialogStatus = 'add'
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
     },
-    createData() {
+    add() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           add(this.temp).then(() => {
             this.dialogFormVisible = false
             this.$notify({
               title: 'Success',
-              message: 'Created Successfully',
+              message: '添加成功',
               type: 'success',
               duration: 2000
             })
-            this.getList()
+            this.listPage()
           })
         }
       })
@@ -277,14 +277,14 @@ export default {
         /* 启用*/
         launch(row.id).then((res) => {
           this.tip(res)
-          this.getList()
+          this.listPage()
         })
       }
       if (status === 'forbidden') {
         /* 禁用*/
         forbidden(row.id).then((res) => {
           this.tip(res)
-          this.getList()
+          this.listPage()
         })
       }
       if (status === 'delete') {
@@ -295,7 +295,7 @@ export default {
         }).then(() => {
           del(row.id).then((res) => {
             this.tip(res)
-            this.getList()
+            this.listPage()
           })
         }).catch(() => {
           this.$message({
@@ -309,10 +309,10 @@ export default {
       setRoles(this.tempRoles).then(response => {
         this.$message.success(response.message)
         this.dialogRoleVisible = false
-        this.getList()
+        this.listPage()
       })
     },
-    updateData() {
+    update() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
@@ -321,11 +321,11 @@ export default {
             this.dialogFormVisible = false
             this.$notify({
               title: 'Success',
-              message: 'Update Successfully',
+              message: '更新成功',
               type: 'success',
               duration: 2000
             })
-            this.getList()
+            this.listPage()
           })
         }
       })
