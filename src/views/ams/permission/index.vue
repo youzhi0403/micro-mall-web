@@ -162,15 +162,15 @@ export default {
       permissionTreeList: [],
       typeOptions: [
         {
-          id: '1',
+          id: 1,
           label: '目录'
         },
         {
-          id: '2',
+          id: 2,
           label: '菜单'
         },
         {
-          id: '3',
+          id: 3,
           label: '功能'
         }
       ]
