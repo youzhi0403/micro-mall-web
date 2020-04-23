@@ -60,10 +60,11 @@
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
         <el-form-item label="父级菜单" prop="parentId">
           <el-cascader
-            v-model="temp.parentId"
-            :options="permissionOptions"
-            :props="{checkStrictly:true}"
-            clearable
+            v-model="temp.parentIds"
+            :options="permissionTreeList"
+            :props="{label:'name',value:'id'}"
+            change-on-select
+            class="my-cascader"
           />
         </el-form-item>
 
@@ -118,7 +119,7 @@
 </template>
 
 <script>
-import { treeList, add, update, deleteBatch, listPage } from '@/api/permission'
+import { treeList, add, update, deleteBatch, listPage, detail } from '@/api/permission'
 import Pagination from '@/components/Pagination'
 import { parseTime } from '@/utils'
 export default {
@@ -149,15 +150,35 @@ export default {
         value: '',
         icon: '',
         uri: '',
-        sort: ''
+        sort: '',
+        parentIds: []
       },
       rules: {
         name: [{ required: true, message: '请输入权限名称', trigger: 'blur' }],
         type: [{ required: true, message: '请选择权限类型', trigger: 'blur' }],
         value: [{ required: true, message: '请输入权限值', trigger: 'blur' }]
       },
-      multipleSelection: []
+      multipleSelection: [],
+      permissionTreeList: [],
+      typeOptions: [
+        {
+          id: '1',
+          label: '目录'
+        },
+        {
+          id: '2',
+          label: '菜单'
+        },
+        {
+          id: '3',
+          label: '功能'
+        }
+      ]
     }
+  },
+  created() {
+    this.listPage()
+    this.treeList()
   },
   methods: {
     listPage() {
@@ -190,6 +211,12 @@ export default {
       })
     },
     add() {
+      if (this.temp.parentIds.length > 0) {
+        this.temp.parentId = this.temp.parentIds.pop()
+      } else {
+        this.temp.parentId = 0
+      }
+      delete this.temp.parentIds
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           add(this.temp).then(() => {
@@ -206,7 +233,9 @@ export default {
       })
     },
     handleUpdate(row) {
-      this.temp = Object.assign({}, row)
+      detail(row.id).then(response => {
+        this.temp = response.data
+      })
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -214,6 +243,12 @@ export default {
       })
     },
     update() {
+      if (this.temp.parentIds.length > 0) {
+        this.temp.parentId = this.temp.parentIds.pop()
+      } else {
+        this.temp.parentId = 0
+      }
+      delete this.temp.parentIds
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
@@ -283,5 +318,7 @@ export default {
 </script>
 
 <style scoped>
-
+.el-cascader.my-cascader{
+  width: 100%;
+}
 </style>

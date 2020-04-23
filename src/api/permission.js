@@ -8,19 +8,19 @@ export function treeList() {
   })
 }
 
-export function add(params) {
+export function add(data) {
   return request({
     url: '/permission/add',
     method: 'post',
-    params
+    data
   })
 }
 
-export function update(params) {
+export function update(data) {
   return request({
-    url: 'permission/update/' + params.id,
+    url: 'permission/update/' + data.id,
     method: 'post',
-    params
+    data
   })
 }
 
@@ -40,5 +40,12 @@ export function listPage(query) {
     url: '/permission/listPage',
     method: 'get',
     params: query
+  })
+}
+
+export function detail(id) {
+  return request({
+    url: '/permission/' + id,
+    method: 'get'
   })
 }
