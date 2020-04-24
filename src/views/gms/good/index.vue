@@ -103,6 +103,75 @@
             <img width="100%" :src="dialogImageUrl" alt="">
           </el-dialog>
         </el-form-item>
+        <el-form-item label="商品状态" prop="status">
+          <el-select v-model="temp.status" placeholder="请选择商品状态">
+            <el-option
+              v-for="item in statusOptions"
+              :key="item.id"
+              :label="item.label"
+              :value="item.id"
+            />
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="请选择商品分类">
+          <el-cascader
+            v-model="temp."
+            :options="classificationNormalTreeList"
+            :props="{label:'name',value:'id'}"
+            change-on-select
+            class="my-cascader"
+          />
+        </el-form-item>
+
+
+        <el-form-item label="价格" prop="price">
+          <el-input v-model="temp.price" placeholder="请输入价格" />
+        </el-form-item>
+
+        <el-form-item label="功能主治" prop="goodFunction">
+          <el-input v-model="temp.goodFunction" placeholder="请输入功能主治" />
+        </el-form-item>
+
+        <el-form-item label="生产厂家" prop="manufacturer">
+          <el-input v-model="temp.manufacturer" placeholder="请输入生产厂家" />
+        </el-form-item>
+
+        <el-form-item label="商品编号" prop="goodNumber">
+          <el-input v-model="temp.goodNumber" placeholder="请输入商品编号" />
+        </el-form-item>
+
+        <el-form-item label="商品类型" prop="goodType">
+          <el-input v-model="temp.goodType" placeholder="请输入商品类型" />
+        </el-form-item>
+
+        <el-form-item label="批准文号" prop="approvalNumber">
+          <el-input v-model="temp.approvalNumber" placeholder="请输入批准文号" />
+        </el-form-item>
+
+        <el-form-item label="产品规格" prop="specification">
+          <el-input v-model="temp.specification" placeholder="请输入产品规格" />
+        </el-form-item>
+
+        <el-form-item label="用法用量" prop="goodUsage">
+          <el-input v-model="temp.goodUsage" placeholder="请输入用法用量" />
+        </el-form-item>
+
+        <el-form-item label="通用名称" prop="commonName">
+          <el-input v-model="temp.commonName" placeholder="请输入通用名称" />
+        </el-form-item>
+
+        <el-form-item label="不良反应" prop="untowardEffect">
+          <el-input v-model="temp.untowardEffect" placeholder="请输入不良反应" />
+        </el-form-item>
+
+        <el-form-item label="禁忌" prop="taboo">
+          <el-input v-model="temp.taboo" placeholder="请输入禁忌" />
+        </el-form-item>
+
+        <el-form-item label="库存" prop="inventory">
+          <el-input v-model="temp.inventory" placeholder="请输入库存" />
+        </el-form-item>
       </el-form>
 
       <div slot="footer" class="dialog-footer">
