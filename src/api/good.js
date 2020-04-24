@@ -41,6 +41,17 @@ export function update(data) {
   return request({
     url: '/good/update/' + data.id,
     method: 'post',
-    data
+    data,
+    paramsSerializer: function(data) {
+      return qs.stringify(data, { arrayFormat: 'repeat' })
+    }
+  })
+}
+
+export function addInventory(data) {
+  return request({
+    url: '/good/addInventory/' + data.id,
+    method: 'post',
+    params: data
   })
 }
