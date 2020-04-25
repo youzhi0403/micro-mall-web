@@ -232,7 +232,7 @@
       </el-form>
 
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">
+        <el-button @click="closeDialog">
           取消
         </el-button>
         <el-button type="primary" @click="dialogStatus==='add'?add():update()">
@@ -362,9 +362,9 @@ export default {
         untowardEffect: '',
         taboo: ''
       }
+      this.fileList = []
     },
     handleAdd() {
-      this.resetTemp()
       this.dialogStatus = 'add'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -405,7 +405,33 @@ export default {
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row) // copy obj
-      this.fileList = this.temp.imgs.split(',')
+      if (this.temp.classificationBodyIds == null) {
+        this.temp.classificationBodyIds = []
+      }
+      if (this.temp.classificationDepartmentIds == null) {
+        this.temp.classificationDepartmentIds = []
+      }
+      if (this.temp.classificationNormalIds == null) {
+        this.temp.classificationNormalIds = []
+      }
+      const arr = this.temp.imgs.split(',')
+      for (let i = 0; i < arr.length; i++) {
+        const name = arr[i].substring(arr[i].lastIndexOf('/'))
+        const url = arr[i]
+        this.fileList.push({
+          name: name,
+          uid: url,
+          url: url,
+          response: {
+            code: 200,
+            data: {
+              name: name,
+              url: url
+            }
+          }
+        })
+      }
+
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -505,6 +531,10 @@ export default {
         this.$message.success(response.message)
         this.listPage()
       })
+    },
+    closeDialog() {
+      this.dialogFormVisible = false
+      this.resetTemp()
     }
   }
 }
