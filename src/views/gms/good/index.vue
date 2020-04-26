@@ -123,7 +123,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" :before-close="handleClose">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="220px" style="width: 500px; margin-left:50px;" class="my-form">
         <el-form-item label="商品名称" prop="name">
           <el-input v-model="temp.name" placeholder="请输入商品名称" />
@@ -133,6 +133,7 @@
         </el-form-item>
         <el-form-item label="图片" class="my-form-item">
           <el-upload
+            ref="my-upload"
             :action="imgUploadUrl"
             list-type="picture-card"
             :on-remove="removeImg"
@@ -232,7 +233,7 @@
       </el-form>
 
       <div slot="footer" class="dialog-footer">
-        <el-button @click="closeDialog">
+        <el-button @click="dialogFormVisible = false">
           取消
         </el-button>
         <el-button type="primary" @click="dialogStatus==='add'?add():update()">
@@ -363,6 +364,7 @@ export default {
         taboo: ''
       }
       this.fileList = []
+      this.$refs['my-upload'].clearFiles()
     },
     handleAdd() {
       this.dialogStatus = 'add'
@@ -490,6 +492,7 @@ export default {
       this.fileList = fileList
     },
     uploadImg(response, file, fileList) {
+      console.log(this.fileList)
       this.fileList = fileList
     },
     treeNormalList() {
@@ -532,9 +535,9 @@ export default {
         this.listPage()
       })
     },
-    closeDialog() {
-      this.dialogFormVisible = false
+    handleClose(done) {
       this.resetTemp()
+      done()
     }
   }
 }
