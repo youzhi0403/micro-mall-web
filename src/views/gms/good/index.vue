@@ -245,7 +245,7 @@
 </template>
 
 <script>
-import { add, del, listPage, update, addInventory } from '@/api/good'
+import { add, del, listPage, update, addInventory, detail } from '@/api/good'
 import { treeList } from '@/api/classification'
 import Pagination from '@/components/Pagination'
 import { parseTime } from '@/utils'
@@ -406,41 +406,45 @@ export default {
       })
     },
     handleUpdate(row) {
-      this.temp = Object.assign({}, row) // copy obj
-      if (this.temp.classificationBodyIds == null) {
-        this.temp.classificationBodyIds = []
-      }
-      if (this.temp.classificationDepartmentIds == null) {
-        this.temp.classificationDepartmentIds = []
-      }
-      if (this.temp.classificationNormalIds == null) {
-        this.temp.classificationNormalIds = []
-      }
-      const arr = this.temp.imgs.split(',')
-      for (let i = 0; i < arr.length; i++) {
-        const name = arr[i].substring(arr[i].lastIndexOf('/'))
-        const url = arr[i]
-        this.fileList.push({
-          name: name,
-          uid: url,
-          url: url,
-          response: {
-            code: 200,
-            data: {
-              name: name,
-              url: url
+      detail(row.id).then(response => {
+        this.temp = response.data
+        const arr = this.temp.imgs.split(',')
+        for (let i = 0; i < arr.length; i++) {
+          const name = arr[i].substring(arr[i].lastIndexOf('/'))
+          const url = arr[i]
+          this.fileList.push({
+            name: name,
+            uid: url,
+            url: url,
+            response: {
+              code: 200,
+              data: {
+                name: name,
+                url: url
+              }
             }
-          }
-        })
-      }
+          })
+        }
 
-      this.dialogStatus = 'update'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
+        this.dialogStatus = 'update'
+        this.dialogFormVisible = true
+        this.$nextTick(() => {
+          this.$refs['dataForm'].clearValidate()
+        })
       })
     },
     update() {
+      this.temp.classificationList = []
+      for (let i = 0; i < this.temp.classificationNormalIds.length; i++) {
+        this.temp.classificationList.push(this.temp.classificationNormalIds[i])
+      }
+      for (let i = 0; i < this.temp.classificationDepartmentIds.length; i++) {
+        this.temp.classificationList.push(this.temp.classificationDepartmentIds[i])
+      }
+      for (let i = 0; i < this.temp.classificationBodyIds.length; i++) {
+        this.temp.classificationList.push(this.temp.classificationBodyIds[i])
+      }
+
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
@@ -492,7 +496,6 @@ export default {
       this.fileList = fileList
     },
     uploadImg(response, file, fileList) {
-      console.log(this.fileList)
       this.fileList = fileList
     },
     treeNormalList() {

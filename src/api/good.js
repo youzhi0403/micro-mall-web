@@ -55,3 +55,10 @@ export function addInventory(data) {
     params: data
   })
 }
+
+export function detail(id) {
+  return request({
+    url: '/good/' + id,
+    method: 'get'
+  })
+}
