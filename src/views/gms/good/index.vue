@@ -8,9 +8,23 @@
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="listPage">
         搜索
       </el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleAdd">
+      <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleAdd">
         新增
       </el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-download" @click="downloadTemplate">
+        导出模板下载
+      </el-button>
+      <el-upload
+        class="import-button"
+        :action="excelUploadUrl"
+        :on-success="excelUploadSuccess"
+        :file-list="excelFileList"
+        :show-file-list="excelUploadFileListVisible"
+        :headers="tokenHeader"
+      >
+        <el-button class="filter-item" type="default" size="primary">导入<i class="el-icon-upload el-icon--right" /></el-button>
+      </el-upload>
+
     </div>
 
     <el-table
@@ -254,6 +268,7 @@ export default {
   components: { Pagination },
   data() {
     var imgUploadUrl = process.env.VUE_APP_BASE_API + '/minio/upload'
+    var excelUploadUrl = process.env.VUE_APP_BASE_API + '/good/import'
     return {
       tableKey: 0,
       list: null,
@@ -313,6 +328,7 @@ export default {
         }
       ],
       imgUploadUrl: imgUploadUrl,
+      excelUploadUrl: excelUploadUrl,
       dialogImageUrl: '',
       dialogVisible: false,
       fileList: [],
@@ -322,7 +338,9 @@ export default {
       },
       tempInventory: {
         addNum: 0
-      }
+      },
+      excelFileList: [],
+      excelUploadFileListVisible: false
     }
   },
   created() {
@@ -550,6 +568,12 @@ export default {
     handleClose(done) {
       this.resetTemp()
       done()
+    },
+    downloadTemplate() {
+      window.location.href = process.env.VUE_APP_BASE_API + '/good/downloadTemplate'
+    },
+    excelUploadSuccess(response, file, fileList) {
+      this.$message.success(response.message)
     }
   }
 }
@@ -573,5 +597,8 @@ export default {
 .el-cascader{
   vertical-align: middle;
   margin-bottom: 10px;
+}
+.import-button{
+  display: inline-block;
 }
 </style>

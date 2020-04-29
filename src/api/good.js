@@ -18,17 +18,6 @@ export function del(id) {
   })
 }
 
-export function downloadTemplate() {
-  return request({
-    url: '/good/downloadTemplate',
-    method: 'get'
-  })
-}
-
-export function importGoods() {
-
-}
-
 export function listPage(query) {
   return request({
     url: '/good/listPage',
