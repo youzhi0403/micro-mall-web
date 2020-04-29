@@ -263,12 +263,18 @@ import { add, del, listPage, update, addInventory, detail } from '@/api/good'
 import { treeList } from '@/api/classification'
 import Pagination from '@/components/Pagination'
 import { parseTime } from '@/utils'
+import { getToken } from '@/utils/auth'
+
 export default {
   name: 'Good',
   components: { Pagination },
   data() {
+    /* 图片上传url*/
     var imgUploadUrl = process.env.VUE_APP_BASE_API + '/minio/upload'
+    /* excel上传url*/
     var excelUploadUrl = process.env.VUE_APP_BASE_API + '/good/import'
+    /* excel上传http头部*/
+    var tokenHeader = { Authorization: getToken() }
     return {
       tableKey: 0,
       list: null,
@@ -340,7 +346,8 @@ export default {
         addNum: 0
       },
       excelFileList: [],
-      excelUploadFileListVisible: false
+      excelUploadFileListVisible: false,
+      tokenHeader: tokenHeader
     }
   },
   created() {
@@ -574,6 +581,7 @@ export default {
     },
     excelUploadSuccess(response, file, fileList) {
       this.$message.success(response.message)
+      this.listPage()
     }
   }
 }
