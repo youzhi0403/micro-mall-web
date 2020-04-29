@@ -401,6 +401,7 @@ export default {
               duration: 2000
             })
             this.listPage()
+            this.resetTemp()
           })
         }
       })
@@ -434,6 +435,7 @@ export default {
       })
     },
     update() {
+      /* 获取分类列表*/
       this.temp.classificationList = []
       for (let i = 0; i < this.temp.classificationNormalIds.length; i++) {
         this.temp.classificationList.push(this.temp.classificationNormalIds[i])
@@ -444,6 +446,12 @@ export default {
       for (let i = 0; i < this.temp.classificationBodyIds.length; i++) {
         this.temp.classificationList.push(this.temp.classificationBodyIds[i])
       }
+      /* 获取图片列表*/
+      var tempArr = []
+      for (let i = 0; i < this.fileList.length; i++) {
+        tempArr.push(this.fileList[i].response.data.url)
+      }
+      this.temp.imgs = tempArr.join(',')
 
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
@@ -458,6 +466,7 @@ export default {
               duration: 2000
             })
             this.listPage()
+            this.resetTemp()
           })
         }
       })
