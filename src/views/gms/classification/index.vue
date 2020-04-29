@@ -5,7 +5,7 @@
       <el-select v-model="listQuery.kind" placeholder="请选择分类类型" clearable style="width: 150px" class="filter-item">
         <el-option v-for="item in kindOptions" :key="item.id" :label="item.label" :value="item.id" />
       </el-select>
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="listPage">
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="listPage">
         搜索
       </el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleAdd">
