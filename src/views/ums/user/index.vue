@@ -1,11 +1,10 @@
 <template>
-
+  <div class="app-container" />
 </template>
-
 <script>
-    export default {
-        name: "index"
-    }
+export default {
+  name: 'User'
+}
 </script>
 
 <style scoped>

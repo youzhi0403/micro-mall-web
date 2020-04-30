@@ -109,6 +109,36 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/ums',
+    component: Layout,
+    redirect: '/ums/accountRecord',
+    name: 'Ums',
+    meta: {
+      title: '用户',
+      icon: 'ums'
+    },
+    children: [
+      {
+        path: 'accountRecord',
+        name: 'AccountRecord',
+        component: () => import('@/views/ums/account-record/index'),
+        meta: { title: '支入支出明细管理', icon: 'account-record' }
+      },
+      {
+        path: 'address',
+        name: 'Address',
+        component: () => import('@/views/ums/address/index'),
+        meta: { title: '用户地址管理', icon: 'address' }
+      },
+      {
+        path: 'user',
+        name: 'User',
+        component: () => import('@/views/ums/user/index'),
+        meta: { title: '商城用户管理', icon: 'user' }
+      }
+    ]
+  },
+  {
     path: '/',
     component: Layout,
     redirect: '/dashboard',

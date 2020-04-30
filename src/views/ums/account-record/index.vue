@@ -1,12 +1,17 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.account" placeholder="请输入账号" class="filter-item" @keyup.enter.native="listPage" />
+      <el-input v-model="listQuery.account" style="width: 200px;" placeholder="请输入账号" class="filter-item" @keyup.enter.native="listPage" />
       <el-date-picker
         v-model="listQuery.createTime"
         type="date"
         placeholder="请选择日期"
+        class="filter-item"
+        value-format="timestamp"
       />
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="listPage">
+        搜索
+      </el-button>
     </div>
     <el-table
       :key="tableKey"
@@ -35,7 +40,7 @@
 
 <script>
 import { listPage } from '@/api/account-record'
-import Pagination from '@/components/Pagination'
+import Pagination from '@/components/Pagination/index'
 import { parseTime } from '@/utils'
 export default {
   name: 'AccountRecord',
@@ -66,8 +71,8 @@ export default {
         this.listLoading = false
       })
     },
-    transferTime() {
-
+    transferTime(date) {
+      return parseTime(new Date(date), '{y}-{m}-{d} {h}:{i}:{s}')
     }
   }
 }
