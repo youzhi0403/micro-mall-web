@@ -4,8 +4,8 @@
       <el-input v-model="listQuery.account" placeholder="请输入用户账号" style="width: 200px;" class="filter-item" @keyup.enter.native="listPage" />
       <el-input v-model="listQuery.telephone" placeholder="请输入手机号码" style="width: 200px;" class="filter-item" @keyup.enter.native="listPage" />
       <el-input v-model="listQuery.nickname" placeholder="清输入用户昵称" style="width: 200px;" class="filter-item" @keyup.enter.native="listPage" />
-      <el-select v-model="listQuery.deleteStatus" placeholder="请选择是否禁用" clearable style="width: 150px" class="filter-item">
-        <el-option v-for="item in deleteStatusOptions" :key="item.id" :label="item.label" :value="item.id" />
+      <el-select v-model="listQuery.status" placeholder="请选择是否禁用" clearable style="width: 150px" class="filter-item">
+        <el-option v-for="item in statusOptions" :key="item.id" :label="item.label" :value="item.id" />
       </el-select>
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="listPage">
         搜索
@@ -30,7 +30,7 @@
       <el-table-column label="余额" align="center" prop="balance" />
       <el-table-column label="用户头像" align="center" prop="avatar">
         <template slot-scope="{row}">
-          <img :src="row.avatar" style="width: 30px;height: 30px;margin-right: 5px;">
+          <img v-if="row.avatar" :src="row.avatar" style="width: 30px;height: 30px;margin-right: 5px;">
         </template>
       </el-table-column>
       <el-table-column label="注册时间" width="160px" align="center">
@@ -41,20 +41,20 @@
       <el-table-column label="状态" width="120px" align="center">
         <template slot-scope="{row}">
           <span>
-            <el-tag v-if="row.status === 0" type="success">启用</el-tag>
-            <el-tag v-if="row.status === 1" type="danger">禁用</el-tag>
+            <el-tag v-if="row.status === 1" type="success">启用</el-tag>
+            <el-tag v-if="row.status === 2" type="danger">禁用</el-tag>
           </span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width" fixed="right">
+      <el-table-column label="操作" align="center" width="300" class-name="small-padding fixed-width" fixed="right">
         <template slot-scope="{row}">
           <el-button type="primary" size="mini" @click.stop.prevent="handleUpdate(row)">
             编辑
           </el-button>
-          <el-button v-if="row.status == 1" size="mini" type="success" @click="handleModifyStatus(row,'start')">
+          <el-button v-if="row.status == 2" size="mini" type="success" @click="handleModifyStatus(row,'start')">
             启用
           </el-button>
-          <el-button v-if="row.status == 0" size="mini" @click="handleModifyStatus(row,'forbidden')">
+          <el-button v-if="row.status == 1" size="mini" @click="handleModifyStatus(row,'forbidden')">
             禁用
           </el-button>
           <el-button size="mini" type="danger" @click.stop.prevent="handleModifyStatus(row,'delete')">
@@ -153,7 +153,7 @@ export default {
         account: '',
         telephone: '',
         nickname: '',
-        deleteStatus: ''
+        status: ''
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -177,7 +177,7 @@ export default {
         checkPass: [{ required: true, message: '请再次输入密码', trigger: 'blur' },
           { validator: validatePass2, trigger: 'blur' }]
       },
-      deleteStatusOptions: [
+      statusOptions: [
         {
           id: '',
           label: '全部'
@@ -187,7 +187,7 @@ export default {
           label: '启用'
         },
         {
-          id: '0',
+          id: '2',
           label: '禁用'
         }
       ],
