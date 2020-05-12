@@ -139,6 +139,30 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/sms',
+    component: Layout,
+    redirect: '/ums/coupons',
+    name: 'Sms',
+    meta: {
+      title: '营销',
+      icon: 'sms'
+    },
+    children: [
+      {
+        path: 'coupons',
+        name: 'Coupons',
+        component: () => import('@/views/sms/coupons/index'),
+        meta: { title: '优惠券管理', icon: 'coupons' }
+      },
+      {
+        path: 'couponsHistory',
+        name: 'CouponsHistory',
+        component: () => import('@/views/sms/coupons-history/index'),
+        meta: { title: '优惠券历史管理', icon: 'couponsHistory' }
+      }
+    ]
+  },
+  {
     path: '/',
     component: Layout,
     redirect: '/dashboard',
