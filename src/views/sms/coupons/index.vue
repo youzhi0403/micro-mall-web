@@ -93,27 +93,24 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.pageNum" :limit.sync="listQuery.pageSize" @pagination="listPage" />
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" :before-close="handleClose">
+
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:50px;">
         <el-form-item label="优惠券类型" prop="useType">
-          <el-select v-model="temp.useType" placeholder="请选择优惠券类型">
-            <el-option
-              v-for="item in useTypeOptions"
-              :key="item.id"
-              :label="item.label"
-              :value="item.id"
-            />
-          </el-select>
+          <el-radio-group v-model="temp.useType">
+            <el-radio-button :label="0">全场通用</el-radio-button>
+            <el-radio-button :label="1">指定分类</el-radio-button>
+            <el-radio-button :label="2">指定商品</el-radio-button>
+            <el-radio-button :label="3">邮费券</el-radio-button>
+          </el-radio-group>
         </el-form-item>
 
         <el-form-item label="优惠券类型" prop="type">
-          <el-select v-model="temp.type" placeholder="请选择优惠券类型">
-            <el-option
-              v-for="item in typeOptions"
-              :key="item.id"
-              :label="item.label"
-              :value="item.id"
-            />
-          </el-select>
+          <el-radio-group v-model="temp.type">
+            <el-radio-button :label="0">全场赠券</el-radio-button>
+            <el-radio-button :label="1">会员赠券</el-radio-button>
+            <el-radio-button :label="2">购物赠券</el-radio-button>
+            <el-radio-button :label="3">注册赠券</el-radio-button>
+          </el-radio-group>
         </el-form-item>
 
         <el-form-item label="优惠券内容" prop="content">
@@ -145,14 +142,11 @@
         </el-form-item>
 
         <el-form-item label="使用平台" prop="platform">
-          <el-select v-model="temp.platform" placeholder="请选择使用平台">
-            <el-option
-              v-for="item in platformOptions"
-              :key="item.id"
-              :label="item.label"
-              :value="item.id"
-            />
-          </el-select>
+          <el-radio-group v-model="temp.platform">
+            <el-radio-button :label="0">全部</el-radio-button>
+            <el-radio-button :label="1">移动</el-radio-button>
+            <el-radio-button :label="2">PC</el-radio-button>
+          </el-radio-group>
         </el-form-item>
 
         <el-form-item label="每人限领张数" prop="perLimit">
@@ -225,58 +219,7 @@ export default {
         enableTime: null,
         publishCount: null
       },
-      typeOptions: [
-        {
-          id: 0,
-          label: '全场赠券'
-        },
-        {
-          id: 1,
-          label: '会员赠券'
-        },
-        {
-          id: 2,
-          label: '购物赠券'
-        },
-        {
-          id: 3,
-          label: '注册赠券'
-        }
-      ],
-      useTypeOptions: [
-        {
-          id: 0,
-          label: '全场通用'
-        },
-        {
-          id: 1,
-          label: '指定分类'
-        },
-        {
-          id: 2,
-          label: '指定商品'
-        },
-        {
-          id: 3,
-          label: '邮费券'
-        }
-      ],
-      platformOptions: [
-        {
-          id: 0,
-          label: '全部'
-        },
-        {
-          id: 1,
-          label: '移动'
-        },
-        {
-          id: 2,
-          label: 'PC'
-        }
-      ],
       rules: {
-
       }
     }
   },
