@@ -51,3 +51,11 @@ export function detail(id) {
     method: 'get'
   })
 }
+
+export function getList(data) {
+  return request({
+    url: 'good/getList',
+    method: 'get',
+    params: data
+  })
+}

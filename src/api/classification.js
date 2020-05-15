@@ -44,3 +44,10 @@ export function detail(id) {
     method: 'get'
   })
 }
+
+export function tree() {
+  return request({
+    url: '/classification/treeList',
+    method: 'get'
+  })
+}

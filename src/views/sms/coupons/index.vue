@@ -94,7 +94,7 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" :before-close="handleClose">
 
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:50px;">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 550px; margin-left:50px;">
         <el-form-item label="优惠券类型" prop="useType">
           <el-radio-group v-model="temp.useType">
             <el-radio-button :label="0">全场通用</el-radio-button>
@@ -102,6 +102,75 @@
             <el-radio-button :label="2">指定商品</el-radio-button>
             <el-radio-button :label="3">邮费券</el-radio-button>
           </el-radio-group>
+        </el-form-item>
+        <el-form-item v-show="temp.useType === 1">
+          <el-cascader
+            v-model="classificationSelect"
+            clearable
+            placeholder="请选择分类名称"
+            :options="classificationOptions"
+          />
+          <el-button @click="handleAddClassificationRelation()">添加</el-button>
+          <el-table
+            ref="classificationTable"
+            :data="temp.classificationRelationList"
+            style="width:100%;margin-top: 20px"
+            border
+          >
+            <el-table-column label="分类名称" align="center">
+              <template slot-scope="scope">{{ scope.row.name }}</template>
+            </el-table-column>
+            <el-table-column label="操作" align="center" width="100">
+              <template slot-scope="scope">
+                <el-button size="mini" type="text" @click="handleDeleteClassificationRelation(scope.$index,scope.row)">
+                  删除
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-form-item>
+        <el-form-item v-show="temp.useType === 2">
+          <el-select
+            v-model="goodSelect"
+            filterable
+            remote
+            reserve-keyword
+            placeholder="商品名称"
+            :remote-method="searchGood"
+            :loading="selectGoodLoading"
+          >
+            <el-option
+              v-for="item in goodOptions"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            >
+              <span style="float:left">{{ item.name }}</span>
+              <span style="float: right; color: #8492a6; font-size: 13px">NO.{{ item.goodNumber }}</span>
+            </el-option>
+          </el-select>
+          <el-button @click="handleAddGoodRelation()">
+            添加
+          </el-button>
+          <el-table
+            :data="temp.goodRelationList"
+            style="width: 100%;margin-top: 20px"
+            border
+          >
+            <el-table-column label="商品名称" align="center">
+              <template slot-scope="scope">{{ scope.row.name }}</template>
+            </el-table-column>
+            <el-table-column label="商品编号" align="center" width="120">
+              <template slot-scope="scope">{{ scope.row.goodNumber }}</template>
+            </el-table-column>
+            <el-table-column label="操作" align="center" width="100">
+              <template slot-scope="scope">
+                <el-button size="mini" type="text" @click="handleDeleteGoodRelation(scope.$index, scope.row)">
+                  删除
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
         </el-form-item>
 
         <el-form-item label="优惠券类型" prop="type">
@@ -183,6 +252,8 @@
 
 <script>
 import { listPage, add, del } from '@/api/coupons'
+import { getList } from '@/api/good'
+import { tree } from '@/api/classification'
 import Pagination from '@/components/Pagination/index'
 import { parseTime } from '@/utils'
 export default {
@@ -217,14 +288,22 @@ export default {
         perLimit: null,
         remark: null,
         enableTime: null,
-        publishCount: null
+        publishCount: null,
+        classificationRelationList: [],
+        goodRelationList: []
       },
       rules: {
-      }
+      },
+      selectGoodLoading: false,
+      classificationSelect: null,
+      goodSelect: null,
+      classificationOptions: [],
+      goodOptions: []
     }
   },
   created() {
     this.listPage()
+    this.loadClassificationOptions()
   },
   methods: {
     listPage() {
@@ -276,9 +355,51 @@ export default {
         })
       })
     },
+    handleAddClassificationRelation() {
+      if (this.classificationSelect === '' || this.classificationSelect === null) {
+        this.$message({
+          message: '请选择商品分类',
+          type: 'warning'
+        })
+        return
+      }
+      this.temp.classificationRelationList.push(this.classificationSelect)
+    },
+    handleDeleteClassificationRelation(index, row) {
+      this.temp.classificationRelationList.splice(index, 1)
+    },
+    handleAddGoodRelation() {
+      if (this.goodSelect === '' || this.goodSelect === null) {
+        this.$message({
+          message: '请选择商品',
+          type: 'warning'
+        })
+        return
+      }
+      this.temp.goodRelationList.push(this.goodSelect)
+    },
+    handleDeleteGoodRelation(index, row) {
+      this.temp.goodRelationList.splice(index, 1)
+    },
+    searchGood: function(query) {
+      if (query !== '') {
+        this.selectGoodLoading = true
+        getList({ keyword: query }).then(response => {
+          this.selectGoodLoading = false
+          this.goodOptions = response.data
+        })
+      } else {
+        this.goodOptions = []
+      }
+    },
     handleClose(done) {
       this.resetTemp()
       done()
+    },
+    loadClassificationOptions() {
+      tree().then(response => {
+        this.classificationOptions = response.data
+      })
     },
     resetTemp() {
       this.temp = {
