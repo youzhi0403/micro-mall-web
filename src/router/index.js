@@ -50,7 +50,7 @@ export const constantRoutes = [
       path: 'home',
       name: 'Home',
       component: () => import('@/views/home/index'),
-      meta: { title: '首页', icon: 'home', affix: true }
+      meta: { title: '首页', icon: 'el-icon-menu', affix: true }
     }]
   },
   {
@@ -60,53 +60,23 @@ export const constantRoutes = [
     name: 'Gms',
     meta: {
       title: '商品',
-      icon: 'gms'
+      icon: 'el-icon-tickets'
     },
     children: [
       {
         path: 'good',
         name: 'Good',
         component: () => import('@/views/gms/good/index'),
-        meta: { title: '商品管理', icon: 'good' }
+        meta: { title: '商品管理', icon: 'el-icon-tickets' }
       },
       {
         path: 'classification',
         name: 'Classification',
         component: () => import('@/views/gms/classification/index'),
-        meta: { title: '分类管理', icon: 'classification' }
+        meta: { title: '分类管理', icon: 'el-icon-printer' }
       }
     ]
 
-  },
-  {
-    path: '/ams',
-    component: Layout,
-    redirect: '/ams/admin',
-    name: 'Ams',
-    meta: {
-      title: '系统',
-      icon: 'ams'
-    },
-    children: [
-      {
-        path: 'admin',
-        name: 'Admin',
-        component: () => import('@/views/ams/admin/index'),
-        meta: { title: '用户管理', icon: 'admin' }
-      },
-      {
-        path: 'role',
-        name: 'Role',
-        component: () => import('@/views/ams/role/index'),
-        meta: { title: '角色管理', icon: 'role' }
-      },
-      {
-        path: 'permission',
-        name: 'Permission',
-        component: () => import('@/views/ams/permission/index'),
-        meta: { title: '权限管理', icon: 'permission' }
-      }
-    ]
   },
   {
     path: '/ums',
@@ -115,169 +85,59 @@ export const constantRoutes = [
     name: 'Ums',
     meta: {
       title: '用户',
-      icon: 'ums'
+      icon: 'el-icon-location'
     },
     children: [
       {
         path: 'accountRecord',
         name: 'AccountRecord',
         component: () => import('@/views/ums/account-record/index'),
-        meta: { title: '支入支出明细管理', icon: 'account-record' }
+        meta: { title: '支入支出明细管理', icon: 'el-icon-tickets' }
       },
       {
         path: 'address',
         name: 'Address',
         component: () => import('@/views/ums/address/index'),
-        meta: { title: '用户地址管理', icon: 'address' }
+        meta: { title: '用户地址管理', icon: 'el-icon-document' }
       },
       {
         path: 'user',
         name: 'User',
         component: () => import('@/views/ums/user/index'),
-        meta: { title: '商城用户管理', icon: 'user' }
+        meta: { title: '商城用户管理', icon: 'el-icon-goods' }
       }
     ]
   },
   {
-    path: '/sms',
+    path: '/ams',
     component: Layout,
-    redirect: '/ums/coupons',
-    name: 'Sms',
+    redirect: '/ams/admin',
+    name: 'Ams',
     meta: {
-      title: '营销',
-      icon: 'sms'
+      title: '系统',
+      icon: 'el-icon-setting'
     },
     children: [
       {
-        path: 'coupons',
-        name: 'Coupons',
-        component: () => import('@/views/sms/coupons/index'),
-        meta: { title: '优惠券管理', icon: 'coupons' }
+        path: 'admin',
+        name: 'Admin',
+        component: () => import('@/views/ams/admin/index'),
+        meta: { title: '用户管理', icon: 'el-icon-news' }
       },
       {
-        path: 'couponsHistory',
-        name: 'CouponsHistory',
-        component: () => import('@/views/sms/coupons-history/index'),
-        meta: { title: '优惠券历史管理', icon: 'couponsHistory' }
-      }
-    ]
-  },
-  {
-    path: '/',
-    component: Layout,
-    redirect: '/dashboard',
-    children: [{
-      path: 'dashboard',
-      name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
-    }]
-  },
-
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
-    children: [
-      {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
+        path: 'role',
+        name: 'Role',
+        component: () => import('@/views/ams/role/index'),
+        meta: { title: '角色管理', icon: 'el-icon-goods' }
       },
       {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
+        path: 'permission',
+        name: 'Permission',
+        component: () => import('@/views/ams/permission/index'),
+        meta: { title: '权限管理', icon: 'el-icon-service' }
       }
     ]
   },
-
-  {
-    path: '/form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
-  },
-
-  {
-    path: '/nested',
-    component: Layout,
-    redirect: '/nested/menu1',
-    name: 'Nested',
-    meta: {
-      title: 'Nested',
-      icon: 'nested'
-    },
-    children: [
-      {
-        path: 'menu1',
-        component: () => import('@/views/nested/menu1/index'), // Parent router-view
-        name: 'Menu1',
-        meta: { title: 'Menu1' },
-        children: [
-          {
-            path: 'menu1-1',
-            component: () => import('@/views/nested/menu1/menu1-1'),
-            name: 'Menu1-1',
-            meta: { title: 'Menu1-1' }
-          },
-          {
-            path: 'menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2'),
-            name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-                name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' }
-              },
-              {
-                path: 'menu1-2-2',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-                name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
-              }
-            ]
-          },
-          {
-            path: 'menu1-3',
-            component: () => import('@/views/nested/menu1/menu1-3'),
-            name: 'Menu1-3',
-            meta: { title: 'Menu1-3' }
-          }
-        ]
-      },
-      {
-        path: 'menu2',
-        component: () => import('@/views/nested/menu2/index'),
-        meta: { title: 'menu2' }
-      }
-    ]
-  },
-
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
-      }
-    ]
-  },
-
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

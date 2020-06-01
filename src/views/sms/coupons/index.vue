@@ -109,6 +109,7 @@
             clearable
             placeholder="请选择分类名称"
             :options="classificationOptions"
+            :props="{label:'name',value:'id'}"
           />
           <el-button @click="handleAddClassificationRelation()">添加</el-button>
           <el-table
@@ -376,7 +377,7 @@ export default {
         })
         return
       }
-      this.temp.goodRelationList.push(this.goodSelect)
+      this.temp.goodRelationList.push(this.getGoodById(this.goodSelect))
     },
     handleDeleteGoodRelation(index, row) {
       this.temp.goodRelationList.splice(index, 1)
@@ -414,7 +415,25 @@ export default {
         perLimit: null,
         remark: null,
         enableTime: null,
-        publishCount: null
+        publishCount: null,
+        classificationRelationList: [],
+        goodRelationList: []
+      }
+    },
+    getGoodById(id) {
+      for (let i = 0; i < this.goodOptions.length; i++) {
+        if (id === this.goodOptions[i].id) {
+          return this.goodOptions[i]
+        }
+      }
+      return null
+    },
+    getClassificationById(ids) {
+      var result = ''
+      for (let j = 0; j < this.classificationOptions.length; j++) {
+        if (ids[0] === this.classificationOptions[j].id) {
+          result = result + this.classificationOptions[j].name
+        }
       }
     },
     transferTime(date) {
